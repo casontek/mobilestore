@@ -6,6 +6,7 @@ import '../../utils/status.dart';
 class LoginState extends Equatable {
   final String email;
   final String password;
+  final bool hidePassword;
   final Status status;
   final String message;
 
@@ -13,12 +14,14 @@ class LoginState extends Equatable {
     this.email = '',
     this.password = '',
     this.message = '',
+    this.hidePassword = true,
     this.status = Status.initial,
   });
 
   LoginState copyWith({
     String? email,
     String? password,
+    bool? hidePassword,
     String? message,
     Status? status,
   }) {
@@ -26,6 +29,7 @@ class LoginState extends Equatable {
         email: email ?? this.email,
         message: message ?? this.message,
         password: password ?? this.password,
+        hidePassword: hidePassword ?? this.hidePassword,
         status: status ?? this.status
     );
   }
@@ -59,6 +63,6 @@ class LoginState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [email, password, status, message];
+  List<Object?> get props => [email, password, status, message, hidePassword];
 
 }
