@@ -84,6 +84,8 @@ class _LoginScreen extends State<LoginScreen> {
                                             )
                                         )
                                     ),
+                                    validator: (value) => state.validateEmail(),
+                                    onChanged: (value) => context.read<LoginBloc>().add(EmailChange(value))
                                   ),
                                   const SizedBox(height: 16.0),
                                   TextFormField(
@@ -121,6 +123,8 @@ class _LoginScreen extends State<LoginScreen> {
                                             )
                                         )
                                     ),
+                                    validator: (value) => state.validatePassword(),
+                                    onChanged: (value) => context.read<LoginBloc>().add(PasswordChange(value))
                                   ),
                                   const SizedBox(height: 24.0),
                                   textButtonWidget(
@@ -135,7 +139,7 @@ class _LoginScreen extends State<LoginScreen> {
                                       context: context,
                                       onClick: () {
                                         if(_formKey.currentState?.validate() == true) {
-
+                                          context.read<LoginBloc>().add(LoginUser(state.email, state.password));
                                         }
                                       }
                                   ),

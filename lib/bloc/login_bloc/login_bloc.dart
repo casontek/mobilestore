@@ -30,6 +30,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<PasswordVisibilityEvent>((event, emit) => emit(state.copyWith(hidePassword: !state.hidePassword)));
 
+    on<EmailChange>((event, emit) => emit(state.copyWith(email: event.email)));
+
+    on<PasswordChange>((event, emit) => emit(state.copyWith(password: event.password)));
+
   }
 
 }
