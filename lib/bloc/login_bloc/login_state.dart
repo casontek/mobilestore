@@ -1,4 +1,5 @@
 
+import 'package:equatable/equatable.dart';
 
 import '../../utils/status.dart';
 

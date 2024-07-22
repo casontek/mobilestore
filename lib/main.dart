@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:mobilestore/screens/auth/entry_screen.dart';
 import 'package:mobilestore/screens/auth/login_screen.dart';
 import 'package:mobilestore/screens/auth/sign_up_screen.dart';
+import 'package:mobilestore/screens/others/listing_screen.dart';
+import 'package:mobilestore/screens/others/product_screen.dart';
 import 'package:mobilestore/theme/material_color.dart';
 
 void main() {
-  runApp(const SmartPay());
+  runApp(const MobileStore());
 }
 
-class SmartPay extends StatelessWidget {
-  const SmartPay({super.key});
+class MobileStore extends StatelessWidget {
+  const MobileStore({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,8 @@ class SmartPay extends StatelessWidget {
         theme: getLightTheme(),
         themeMode: ThemeMode.light,
         routes: {
-          '/product': (context) => ProductScreen(),
-          '/listing': (context) => ListingScreen(),
+          '/product': (context) => const ProductScreen(),
+          '/listing': (context) => const ListingScreen(),
           '/register': (context) => const SignUpScreen(),
           '/login': (context) => const LoginScreen(),
         },
