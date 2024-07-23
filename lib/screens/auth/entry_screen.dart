@@ -47,10 +47,10 @@ class _EntryScreen extends State<_EntryScreenProvider> {
     return BlocConsumer<EntryBloc, EntryState>(
         listener: (context, state) {
           if(state.status == LoginStatus.hasLogged) {
-            Navigator.pushReplacementNamed(context, 'listing');
+            Navigator.pushReplacementNamed(context, '/listing');
           }
           else {
-            Navigator.pushReplacementNamed(context, 'login');
+            Navigator.pushReplacementNamed(context, '/login');
           }
           print('@@@@@@@@@@@@@@@@@@ Login state: ${state.status}');
         },

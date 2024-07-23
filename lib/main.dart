@@ -24,6 +24,7 @@ class MobileStore extends StatelessWidget {
           '/product': (context) => const ProductScreen(),
           '/listing': (context) => const ListingScreen(),
           '/register': (context) => const SignUpScreen(),
+          '/profile': (context) => const ProductScreen(),
           '/login': (context) => const LoginScreen(),
         },
         home: const EntryScreen()

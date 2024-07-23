@@ -37,6 +37,11 @@ class PasswordChange extends RegisterEvent {
   List<Object?> get props => [password];
 }
 
+class PasswordVisibilityEvent extends RegisterEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class ConfirmPasswordChange extends RegisterEvent {
   final String password;
 

@@ -56,10 +56,7 @@ class LoginState extends Equatable {
     if(password.isEmpty) {
       return 'password is required.';
     }
-    else {
-      final passwordRegExp = RegExp(r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$',);
-      return passwordRegExp.hasMatch(password) ? null : 'Invalid password.';
-    }
+    return null;
   }
 
   @override

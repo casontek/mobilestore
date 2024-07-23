@@ -10,11 +10,8 @@ class EntryBloc extends Bloc<EntryEvent, EntryState> {
 
   EntryBloc() : super(const EntryState()) {
     on<CheckLogin>((event, emit) async {
-      //check existing user
-      final user = await sqlService.getUser();
-      if(user != null) {
-        //check if user is logged
-        final isLogged = await sqlService.isLogged(user.name);
+        //check if any user is logged
+        final isLogged = await sqlService.isLogged();
         if(isLogged) {
           emit(state.copyWith(
               status: LoginStatus.hasLogged,
@@ -27,13 +24,6 @@ class EntryBloc extends Bloc<EntryEvent, EntryState> {
               message: 'User not logged.'
           ));
         }
-      }
-      else {
-        emit(state.copyWith(
-            status: LoginStatus.notRegistered,
-            message: 'No existing user data.'
-        ));
-      }
     });
   }
 

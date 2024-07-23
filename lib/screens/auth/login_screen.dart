@@ -32,7 +32,10 @@ class _LoginScreen extends State<LoginScreen> {
               child: BlocConsumer<LoginBloc, LoginState>(
                   listener: (context, state) {
                     if(state.status == Status.success) {
-                      Navigator.pushReplacementNamed(context, 'listing');
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/listing', (Route<dynamic> route) => false
+                      );
                     }
                     else if(state.status == Status.failed) {
                       //show error message
@@ -42,19 +45,20 @@ class _LoginScreen extends State<LoginScreen> {
                   },
                   builder: (context, state) {
                     return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
                         child: Form(
                             key: _formKey,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  const SizedBox(height: 32.0),
                                   customTextWidget(
                                       label: 'Account Login',
                                       size: 24,
                                       weight: FontWeight.w600,
                                       textColor: Theme.of(context).colorScheme.primary
                                   ),
-                                  const SizedBox(height: 32.0),
+                                  const SizedBox(height: 18.0),
                                   TextFormField(
                                     keyboardType: TextInputType.emailAddress,
                                     textInputAction: TextInputAction.next,
@@ -126,7 +130,7 @@ class _LoginScreen extends State<LoginScreen> {
                                     validator: (value) => state.validatePassword(),
                                     onChanged: (value) => context.read<LoginBloc>().add(PasswordChange(value))
                                   ),
-                                  const SizedBox(height: 24.0),
+                                  const SizedBox(height: 18.0),
                                   textButtonWidget(
                                       label: 'Forgot Password?',
                                       context: context,
@@ -157,11 +161,11 @@ class _LoginScreen extends State<LoginScreen> {
                                         textButtonWidget(
                                             label: 'Sign Up',
                                             context: context,
-                                            onClick: () => Navigator.pushNamed(context, 'register')
+                                            onClick: () => Navigator.pushNamed(context, '/register')
                                         )
                                       ]
                                   ),
-                                  const SizedBox(height: 8.0)
+                                  const SizedBox(height: 18.0)
                                 ]
                             )
                         )
@@ -176,8 +180,10 @@ class _LoginScreen extends State<LoginScreen> {
 }
 
 void toastMessage(String message, BuildContext c) {
-  ScaffoldMessenger.of(c).showSnackBar(SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
+  ScaffoldMessenger.of(c).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 2)
     ));
 }

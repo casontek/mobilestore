@@ -15,12 +15,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
        //login user using credential
        emit(state.copyWith(status: Status.loading));
        final isLogged = await sqlService.login(event.email, event.password);
+
        if(isLogged) {
          emit(state.copyWith(status: Status.success));
        }
        else {
          emit(state.copyWith(
-             status: Status.success,
+             status: Status.failed,
              message: 'invalid credentials.'
          ));
        }

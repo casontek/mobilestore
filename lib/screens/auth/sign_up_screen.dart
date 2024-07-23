@@ -39,7 +39,7 @@ class _SignUpScreen extends State<SignUpScreen> {
                 child: BlocConsumer<RegisterBloc, RegisterState>(
                     listener: (context, state) {
                       if(state.status == Status.success) {
-                        Navigator.pushReplacementNamed(context, 'login');
+                        Navigator.pushReplacementNamed(context, '/login');
                       }
                       else if(state.status == Status.failed) {
                         //show error message
@@ -55,13 +55,14 @@ class _SignUpScreen extends State<SignUpScreen> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    const SizedBox(height: 32.0),
                                     customTextWidget(
                                         label: 'Create an Account',
                                         size: 24,
                                         weight: FontWeight.w600,
                                         textColor: Theme.of(context).colorScheme.primary
                                     ),
-                                    const SizedBox(height: 14.0),
+                                    const SizedBox(height: 18.0),
                                     TextFormField(
                                       keyboardType: TextInputType.emailAddress,
                                       textInputAction: TextInputAction.done,
@@ -96,11 +97,17 @@ class _SignUpScreen extends State<SignUpScreen> {
                                     ),
                                     const SizedBox(height: 14.0),
                                     TextFormField(
+                                      obscureText: state.hidePassword,
                                       keyboardType: TextInputType.visiblePassword,
                                       textInputAction: TextInputAction.done,
                                       decoration: InputDecoration(
                                           hintText: 'Password',
                                           filled: true,
+                                          suffixIcon: GestureDetector(
+                                              child: Icon(
+                                                  state.hidePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                                              onTap: () => context.read<RegisterBloc>().add(PasswordVisibilityEvent())
+                                          ),
                                           fillColor: Theme.of(context).colorScheme.surfaceTint,
                                           border: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(16.0),
@@ -134,6 +141,11 @@ class _SignUpScreen extends State<SignUpScreen> {
                                       decoration: InputDecoration(
                                           hintText: 'Confirm Password',
                                           filled: true,
+                                          suffixIcon: GestureDetector(
+                                              child: Icon(
+                                                  state.hidePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                                              onTap: () => context.read<RegisterBloc>().add(PasswordVisibilityEvent())
+                                          ),
                                           fillColor: Theme.of(context).colorScheme.surfaceTint,
                                           border: OutlineInputBorder(
                                               borderRadius: BorderRadius.circular(16.0),
@@ -186,11 +198,11 @@ class _SignUpScreen extends State<SignUpScreen> {
                                           textButtonWidget(
                                               label: 'Sign In',
                                               context: context,
-                                              onClick: ()  => Navigator.pushNamed(context, 'login')
+                                              onClick: ()  => Navigator.pushNamed(context, '/login')
                                           )
                                         ]
                                     ),
-                                    const SizedBox(height: 8.0)
+                                    const SizedBox(height: 18.0)
                                   ]
                               )
                           )

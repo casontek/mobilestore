@@ -21,8 +21,8 @@ class SQLiteService {
     return openDatabase(
         join(path, 'mobile_store.db'),
         onCreate: (db, version) async {
-          await db.execute("CREATE TABLE User(email TEXT PRIMARY KEY, name TEXT, picture TEXT");
-          await db.execute("CREATE TABLE Login(email TEXT PRIMARY KEY, password TEXT, isLogged BOOLEAN");
+          await db.execute("CREATE TABLE User(email TEXT PRIMARY KEY, name TEXT, picture TEXT)");
+          await db.execute("CREATE TABLE Login(email TEXT PRIMARY KEY, password TEXT, isLogged BOOLEAN)");
         },
         version: 1
     );
@@ -38,6 +38,7 @@ class SQLiteService {
           user.toJson(),
           conflictAlgorithm: ConflictAlgorithm.ignore
       );
+      print('@@@@@@@@@@@@@@@@@@@@ User created.');
     }
     catch(e) {
       print('===========> Fail to save User: $e');
@@ -51,7 +52,7 @@ class SQLiteService {
       }
       await _db.insert(
           'Login',
-          {'email': email, 'password': password, 'isLogged': false},
+          {'email': email, 'password': password, 'isLogged': 0},
           conflictAlgorithm: ConflictAlgorithm.ignore
       );
     }
@@ -65,6 +66,7 @@ class SQLiteService {
       await initializeDB();
     }
     final user = await _db.query('User');
+
     if(user.isNotEmpty) {
       return User.fromJson(user.first);
     }
@@ -92,17 +94,17 @@ class SQLiteService {
       );
       return true;
     }
+
     return false;
   }
 
-  Future<bool> isLogged(String email) async {
+  Future<bool> isLogged() async {
     if(!hasInitialized) {
       await initializeDB();
     }
 
     List<Map> result = await _db.rawQuery(
-        "SELECT isLogged FROM Login WHERE email = ?",
-        [email]
+        "SELECT * FROM Login WHERE isLogged = 1"
     );
 
     if (result.isNotEmpty && result.first['isLogged'] == 1) {
