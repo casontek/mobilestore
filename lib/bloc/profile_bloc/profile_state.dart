@@ -12,12 +12,14 @@ class ProfileState extends Equatable {
   final bool isEditing;
   final String name;
   final String phone;
+  final String address;
 
   const ProfileState({
     this.user,
     this.message = '',
     this.name = '',
     this.phone = '',
+    this.address = '',
     this.status = Status.initial,
     this.isEditing = false
   });
@@ -28,7 +30,8 @@ class ProfileState extends Equatable {
     Status? status,
     bool? isEditing,
     String? name,
-    String? phone
+    String? phone,
+    String? address
   }){
     return ProfileState(
       message: message ?? this.message,
@@ -36,11 +39,12 @@ class ProfileState extends Equatable {
       status: status ?? this.status,
       isEditing: isEditing ?? this.isEditing,
       name: name ?? this.name,
-      phone: phone ?? this.phone
+      phone: phone ?? this.phone,
+      address: address ?? this.address
     );
   }
 
   @override
-  List<Object?> get props => [message, user, status, isEditing, name, phone];
+  List<Object?> get props => [message, user, status, isEditing, name, phone, address];
 
 }

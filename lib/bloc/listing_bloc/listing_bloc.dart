@@ -2,6 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobilestore/bloc/listing_bloc/listing_event.dart';
 import 'package:mobilestore/bloc/listing_bloc/listing_state.dart';
+import 'package:mobilestore/models/product.dart';
 import 'package:mobilestore/services/store_client_api_service.dart';
 
 import '../../utils/status.dart';
@@ -26,6 +27,20 @@ class ListingBloc extends Bloc<ListingEvent, ListingState>{
             message: result.message
         ));
       }
+    });
+
+    on<FavoriteProduct>((event, emit) {
+      List<Product> favoriteProducts = List.from(state.favorites);
+      favoriteProducts.add(event.product);
+      //update favorite list
+      emit(state.copyWith(favorites: favoriteProducts));
+    });
+
+    on<RemoveFavorite>((event, emit) {
+      List<Product> favoriteProducts = List.from(state.favorites);
+      favoriteProducts.removeWhere((favorite) => favorite == event.product);
+      //update favorite list
+      emit(state.copyWith(favorites: favoriteProducts));
     });
 
   }

@@ -25,7 +25,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<RegisterUser>((event, emit) async {
       emit(state.copyWith(status: Status.loading));
       try {
-        final user = User('', event.email, '');
+        final user = User('', event.email, '', '', '');
         //create user account
         await sqlService.saveUser(user);
         //add user login credential

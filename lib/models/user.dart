@@ -8,11 +8,15 @@ class User {
   final String name;
   final String email;
   final String? picture;
+  final String? phone;
+  final String? address;
 
   User(
       this.name,
       this.email,
-      this.picture
+      this.picture,
+      this.phone,
+      this.address
       );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

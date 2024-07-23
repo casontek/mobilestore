@@ -21,7 +21,7 @@ class SQLiteService {
     return openDatabase(
         join(path, 'mobile_store.db'),
         onCreate: (db, version) async {
-          await db.execute("CREATE TABLE User(email TEXT PRIMARY KEY, name TEXT, picture TEXT)");
+          await db.execute("CREATE TABLE User(email TEXT PRIMARY KEY, name TEXT, picture TEXT, phone TEXT, address TEXT)");
           await db.execute("CREATE TABLE Login(email TEXT PRIMARY KEY, password TEXT, isLogged BOOLEAN)");
         },
         version: 1
@@ -42,6 +42,25 @@ class SQLiteService {
     }
     catch(e) {
       print('===========> Fail to save User: $e');
+    }
+  }
+
+  Future<bool> updateUser(User user) async {
+    try {
+      if(!hasInitialized) {
+        await initializeDB();
+      }
+      await _db.update(
+        'User',
+        user.toJson(),
+        where: 'email = ?',
+        whereArgs: [user.email]
+      );
+      return true;
+    }
+    catch(e) {
+      print('===========> Fail to save User: $e');
+      return false;
     }
   }
 

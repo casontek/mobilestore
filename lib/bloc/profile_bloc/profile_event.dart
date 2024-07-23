@@ -9,6 +9,12 @@ class GetUserData extends ProfileEvent {
   List<Object?> get props => [];
 }
 
+class ResetState extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+
+}
+
 class NameChange extends ProfileEvent {
   final String name;
 
@@ -34,4 +40,14 @@ class AddressChange extends ProfileEvent {
 
   @override
   List<Object?> get props => [address];
+}
+
+class EditProfile extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class SubmitEdit extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
 }

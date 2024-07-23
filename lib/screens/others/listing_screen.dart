@@ -1,6 +1,5 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,12 +61,13 @@ class _ListingScreen extends State<_ListingScreenProvider> {
                     titleTextStyle: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontFamily: 'Roboto',
-                      fontSize: 23
+                      fontSize: 23,
                   ),
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    //backgroundColor: Theme.of(context).colorScheme.secondary,
                     actions: <Widget>[
                       IconButton(
-                        icon: const Icon(Icons.person_3_outlined),
+                        icon: const Icon(Icons.person),
+                        color: Theme.of(context).colorScheme.primary,
                         onPressed: () => Navigator.pushNamed(context, '/profile'),
                       )
                     ]
@@ -121,12 +121,17 @@ class _ListingScreen extends State<_ListingScreenProvider> {
                                       product: product,
                                       itemWidth: itemWidth,
                                       context: context,
+                                      favorites: state.favorites,
                                       onSelect: (product) {
                                         Navigator.pushNamed(
                                           context,
                                           '/product',
                                           arguments: product,
                                         );
+                                      },
+                                      onFavorite: (product, favorite) {
+                                        context.read<ListingBloc>().add(favorite ?
+                                        RemoveFavorite(product) : FavoriteProduct(product));
                                       }
                                   ))
                             ],
@@ -144,67 +149,89 @@ Widget productItemWidget({
   required Product product,
   required double itemWidth,
   required BuildContext context,
-  required Function(Product product) onSelect
+  required List<Product> favorites,
+  required Function(Product product) onSelect,
+  required Function(Product product, bool isFavorite) onFavorite
 }) {
+  bool isFavorite = favorites.contains(product);
+
   return GestureDetector(
     onTap: () => onSelect(product),
     child: Container(
       width: itemWidth,
-      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
           color: Colors.grey.withOpacity(0.3)
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: CachedNetworkImage(
-                imageUrl: product.image ?? '',
-                fit: BoxFit.contain,
-                width: itemWidth,
-                height: itemWidth,
-                errorWidget: (_, url, data) {
-                  return Container(
-                    color: Colors.grey,
-                    width: itemWidth,
-                    height: itemWidth,
-                  );
-                },
-                progressIndicatorBuilder: (_, url, progress) {
-                  return Container(
-                    color: Colors.grey,
-                    width: itemWidth,
-                    height: itemWidth,
-                  );
-                }
-            ),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                        imageUrl: product.image ?? '',
+                        fit: BoxFit.contain,
+                        width: itemWidth,
+                        height: itemWidth,
+                        errorWidget: (_, url, data) {
+                          return Container(
+                            color: Colors.grey,
+                            width: itemWidth,
+                            height: itemWidth,
+                          );
+                        },
+                        progressIndicatorBuilder: (_, url, progress) {
+                          return Container(
+                            color: Colors.grey,
+                            width: itemWidth,
+                            height: itemWidth,
+                          );
+                        }
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    product.title ?? '',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Roboto',
+                        color: Theme.of(context).colorScheme.primary
+                    ),
+                    maxLines: 1,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    'Price: ${product.price}',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Roboto',
+                        color: Theme.of(context).colorScheme.secondary
+                    ),
+                    maxLines: 1,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              )
           ),
-          const SizedBox(height: 4.0),
-          Text(
-            product.title ?? '',
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Roboto',
-                color: Theme.of(context).colorScheme.primary
-            ),
-            maxLines: 1,
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            'Price: ${product.price}',
-            style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Roboto',
-                color: Theme.of(context).colorScheme.secondary
-            ),
-            maxLines: 1,
-            textAlign: TextAlign.start,
-            overflow: TextOverflow.ellipsis,
+          Positioned(
+              bottom: 4.0,
+              right: 6.0,
+              child: GestureDetector(
+                onTap: () => onFavorite(product, isFavorite),
+                child: Icon(
+                    isFavorite ? Icons.favorite_rounded :
+                    Icons.favorite_border_rounded,
+                    color: Colors.pink
+                )
+              )
           )
         ],
       ),
